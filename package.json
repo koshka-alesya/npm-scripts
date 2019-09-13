@@ -1,0 +1,53 @@
+{
+  "name": "npm-scripts-study",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "webpack",
+    "templates": "pug -P --output-style compressed -o dist app/pages",
+    "autoprefixer": "postcss -u autoprefixer -r dist/assets/styles/*.css",
+    "imagemin": "imagemin app/common/images/*.{png,jpg,gif}  --out-dir=dist/assets/images/",
+    "uglify": "mkdirp dist/assets/scripts && uglifyjs app/common/scripts/*.js -m -o dist/assets/scripts/app.js && uglifyjs app/common/scripts/*.js -m -c -o dist/assets/scripts/app.min.js",
+    "icons": "svgo -f app/common/icons && mkdirp dist/assets/images/icons && svg-sprite-generate -d app/common/icons -o dist/assets/images/icons/icons.svg",
+    "server": "browser-sync start --server \"dist\" --files \"./dist/**/*.*, ./dist/*.*\"",
+    "copy": "mkdirp dist/assets/fonts && cp app/common/fonts/* dist/assets/fonts/",
+    "scss": "node-sass --output-style compressed -o dist/assets/styles app/common/styles/app.scss",
+    "build:styles": "npm run scss && npm run autoprefixer",
+    "build:scripts": "npm run build && npm run uglify",
+    "build:images": "npm run imagemin && npm run icons",
+    "build:all": "npm run clean && npm run copy && npm run build:styles && npm run build:scripts && npm run templates && npm run build:images",
+    "watch:styles": "onchange 'app/**/*.scss' -- npm run build:styles",
+    "watch:scripts": "onchange 'app/**/*.js' -- npm run build:scripts",
+    "watch:templates": "onchange 'app/pages/*.pug' -- npm run templates",
+    "watch": "parallelshell \"npm run server\" \"npm run watch:templates\" \"npm run watch:styles\" \"npm run watch:scripts\"",
+    "start": "npm run build:all && npm run watch",
+    "production": "npm run clear && npm run build:all"
+  },
+  "author": "Alesia and Jane",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^9.6.1",
+    "browser-sync": "^2.26.7",
+    "eslint": "^6.3.0",
+    "imagemin-cli": "^5.0.0",
+    "node-sass": "^4.12.0",
+    "onchange": "^6.0.0",
+    "parallelshell": "^3.0.1",
+    "postcss-cli": "^6.1.3",
+    "svg-sprite-generator": "0.0.7",
+    "svgo": "^1.3.0",
+    "uglify-js": "^3.6.0",
+    "underscore-cli": "^0.2.19",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.8"
+  },
+  "dependencies": {
+    "git": "^0.1.5",
+    "python": "0.0.4",
+    "underscore": "^1.9.1",
+    "underscore-node": "^0.1.2",
+    "underscore-template-loader": "^1.0.0"
+  }
+}
