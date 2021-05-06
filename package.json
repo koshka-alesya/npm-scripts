@@ -46,7 +46,7 @@
   "dependencies": {
     "git": "^0.1.5",
     "python": "0.0.4",
-    "underscore": "^1.9.1",
+    "underscore": "^1.12.1",
     "underscore-node": "^0.1.2",
     "underscore-template-loader": "^1.0.0"
   }
